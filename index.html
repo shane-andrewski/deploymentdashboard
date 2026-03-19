@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{data["dashboard_name"]}</title>
+<style>
+:root {
+  --bg:#0A0A0F; --panel:#11111A; --card:#14192A; --alt:#0E1220; --text:#E8ECF3; --muted:#94A0B8;
+  --accent:#EB4BC6; --outline:#262C3D; --green:#22C55E; --orange:#F59E0B; --red:#FF5A5F; --blue:#38BDF8;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; background:var(--bg); color:var(--text); font-family:Inter,Segoe UI,Arial,sans-serif; }
+body { padding:18px; }
+.header { display:grid; grid-template-columns:1fr auto; gap:16px; background:linear-gradient(180deg,#151725,#0e1018); border:1px solid var(--outline); border-radius:20px; padding:18px; margin-bottom:16px; }
+.eyebrow { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.h1 { font-size:30px; font-weight:800; margin:8px 0 4px; }
+.sub { color:var(--muted); }
+.actions { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start; justify-content:flex-end; }
+button,.pill { border:1px solid var(--outline); background:#181C2B; color:var(--text); border-radius:12px; padding:10px 14px; cursor:pointer; }
+button:hover { background:#20263A; }
+.layout { display:grid; grid-template-columns:280px 1fr 340px; gap:16px; }
+.panel, .card { background:var(--panel); border:1px solid var(--outline); border-radius:18px; }
+.panel { padding:14px; }
+.card { padding:14px; background:var(--card); }
+.sidebar h3, .details h3 { margin:0 0 12px; font-size:16px; }
+.input, textarea, select { width:100%; background:var(--alt); color:var(--text); border:1px solid var(--outline); border-radius:12px; padding:10px 12px; }
+textarea { min-height:120px; resize:vertical; }
+.location-list { display:flex; flex-direction:column; gap:10px; margin-top:12px; max-height:70vh; overflow:auto; }
+.location-item { padding:12px; border:1px solid var(--outline); border-radius:14px; background:#0f1320; cursor:pointer; }
+.location-item.active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+.location-name { font-weight:700; margin-bottom:4px; }
+.location-meta { color:var(--muted); font-size:13px; }
+.workspace { display:flex; flex-direction:column; gap:16px; }
+.tabbar { display:flex; gap:10px; flex-wrap:wrap; }
+.tab { padding:10px 14px; border-radius:999px; background:#171b29; border:1px solid var(--outline); cursor:pointer; }
+.tab.active { background:var(--accent); color:white; border-color:var(--accent); }
+.grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.metric { background:var(--card); border:1px solid var(--outline); border-radius:18px; padding:14px; }
+.metric-label { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+.metric-value { font-size:28px; font-weight:800; margin-top:8px; }
+.section { background:var(--panel); border:1px solid var(--outline); border-radius:18px; padding:14px; }
+.section h4 { margin:0 0 12px; font-size:16px; }
+.two-col { display:grid; grid-template-columns:1.3fr 1fr; gap:16px; }
+.three { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.checks { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.check { background:#0f1320; border:1px solid var(--outline); border-radius:14px; padding:10px 12px; }
+.progress { height:12px; background:#0f1320; border:1px solid var(--outline); border-radius:999px; overflow:hidden; }
+.progress > span { display:block; height:100%; background:linear-gradient(90deg,var(--accent),#ff7fd9); }
+.exports { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-start; }
+.export-chip { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--outline); border-radius:999px; padding:10px 14px; background:#0f1320; font-size:13px; color:var(--text); text-decoration:none; }
+.export-chip:hover { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+.export-chip.local { cursor:default; color:var(--muted); }
+.stack { display:flex; flex-direction:column; gap:16px; }
+.hidden { display:none !important; }
+.note { color:var(--muted); font-size:13px; line-height:1.45; }
+@media (max-width:1200px) { .layout{grid-template-columns:1fr;} .two-col,.three,.grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<script id="dashboard-data" type="application/json">{"dashboard_name": "Deployment Support Dashboard", "customer_group": "Internal Deployment Team", "milestone_templates": ["Rack Delivered", "Network Ready", "QuLSR Installed", "White Rabbit Validated", "Carina Configured", "Final Validation"], "troubleshooting_hub": {"notes": "Use this guide for cross-site recovery steps, known device failure patterns, and links to interactive HTML diagnostics that apply to the broader deployment program.", "docs": [{"label": "Osu Devices Summary", "path": "exports/troubleshooting-guide/OSU_DEVICES_SUMMARY.html"}]}, "locations": [{"id": "d0004c19-9ca0-460d-85c3-d29b93a3d622", "name": "New York POP", "customer": "Acme Telecom", "address": "350 5th Ave, New York, NY", "engineer": "Alex", "status": "In Progress", "progress": 55, "notes": "Waiting on final fiber patch validation.", "blockers": "Customer maintenance window not confirmed.", "next_steps": "Validate White Rabbit timing and close rack checklist.", "milestones": {"Rack Delivered": true, "Network Ready": true, "QuLSR Installed": true, "White Rabbit Validated": false, "Carina Configured": false, "Final Validation": false}, "deployment_docs": [{"label": "Osu Devices Summary", "path": "exports/new-york-pop/OSU_DEVICES_SUMMARY.html"}], "troubleshooting_notes": "Oscillator drift appears after 20 minutes of uptime. Use the linked device guides and recovery flow.", "troubleshooting_docs": [{"label": "Osu Devices Summary", "path": "exports/new-york-pop/OSU_DEVICES_SUMMARY-2.html"}], "updated_at": "2026-03-19T01:34:26"}, {"id": "c77e7e2e-b051-4e8d-bd8c-e6d7dcf8b027", "name": "Chicago Core", "customer": "Acme Telecom", "address": "600 W Chicago Ave, Chicago, IL", "engineer": "Sam", "status": "Blocked", "progress": 35, "notes": "Router management VLAN mismatch discovered during turn-up.", "blockers": "Awaiting corrected switch template from networking.", "next_steps": "Apply updated VLAN template, rerun validation.", "milestones": {"Rack Delivered": false, "Network Ready": false, "QuLSR Installed": false, "White Rabbit Validated": false, "Carina Configured": false, "Final Validation": false}, "deployment_docs": [], "troubleshooting_notes": "Validate switch template version and compare port mode against known-good baseline.", "troubleshooting_docs": [], "updated_at": "2026-03-19T01:34:26"}]}</script>
+<div class="header">
+  <div>
+    <div class="eyebrow">Deployment Ops</div>
+    <div class="h1" id="dashboard-title"></div>
+    <div class="sub" id="dashboard-team"></div>
+  </div>
+  <div class="actions">
+    <button id="download-html">Download Edited HTML</button>
+    <button id="download-json">Download JSON Snapshot</button>
+    <span class="pill">GitHub Pages friendly • browser edits stay local to each viewer</span>
+  </div>
+</div>
+<div class="layout">
+  <aside class="panel sidebar">
+    <h3>Locations</h3>
+    <input class="input" id="location-search" placeholder="Search locations, customers, engineers">
+    <div class="location-list" id="location-list"></div>
+  </aside>
+  <main class="workspace">
+    <div class="tabbar" id="tabbar"></div>
+    <div class="grid" id="metrics"></div>
+    <div class="two-col">
+      <section class="section">
+        <h4>Deployment Overview</h4>
+        <div class="three">
+          <div>
+            <div class="note">Customer</div>
+            <input class="input editable" id="customer">
+          </div>
+          <div>
+            <div class="note">Engineer</div>
+            <input class="input editable" id="engineer">
+          </div>
+          <div>
+            <div class="note">Status</div>
+            <select class="editable" id="status"></select>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="note">Address</div>
+          <input class="input editable" id="address">
+        </div>
+        <div style="margin-top:12px">
+          <div class="note">Progress</div>
+          <div class="progress"><span id="progress-bar"></span></div>
+          <input class="editable" type="range" min="0" max="100" id="progress-range" style="width:100%; margin-top:10px">
+          <div class="note" id="progress-text"></div>
+        </div>
+      </section>
+      <section class="section">
+        <h4>Milestones</h4>
+        <div class="checks" id="milestones"></div>
+      </section>
+    </div>
+    <div class="two-col">
+      <section class="section">
+        <h4>Notes</h4>
+        <textarea class="editable" id="notes"></textarea>
+      </section>
+      <section class="section">
+        <h4>Blockers</h4>
+        <textarea class="editable" id="blockers"></textarea>
+      </section>
+    </div>
+    <section class="section">
+      <h4>Next Steps</h4>
+      <textarea class="editable" id="next-steps"></textarea>
+    </section>
+    <section class="section">
+      <h4>Location Troubleshooting Notes</h4>
+      <textarea class="editable" id="troubleshooting-notes"></textarea>
+    </section>
+  </main>
+  <aside class="panel details">
+    <h3>Interactive HTML Documents</h3>
+    <div class="stack">
+      <section>
+        <div class="note" style="margin-bottom:8px">Deployment Documents</div>
+        <div class="exports" id="deployment-exports"></div>
+      </section>
+      <section>
+        <div class="note" style="margin-bottom:8px">Troubleshooting Documents</div>
+        <div class="exports" id="troubleshooting-exports"></div>
+      </section>
+      <section>
+        <div class="note" style="margin-bottom:8px">Program Troubleshooting Guide</div>
+        <div class="note" id="hub-notes"></div>
+        <div style="height:8px"></div>
+        <div class="exports" id="hub-exports"></div>
+      </section>
+    </div>
+    <div style="height:12px"></div>
+    <div class="note">Attached HTML documents open in a new tab. Local Windows paths are shown here, but only GitHub-exported `exports/...` files will open from the published website.</div>
+  </aside>
+</div>
+<script>
+const raw = JSON.parse(document.getElementById('dashboard-data').textContent);
+const storageKey = 'deployment-support-dashboard:' + location.pathname;
+const saved = localStorage.getItem(storageKey);
+const data = saved ? JSON.parse(saved) : raw;
+const statuses = ["Not Started", "In Progress", "Blocked", "Ready for Review", "Complete"];
+let activeIndex = 0;
+
+const titleEl = document.getElementById('dashboard-title');
+const teamEl = document.getElementById('dashboard-team');
+const tabbar = document.getElementById('tabbar');
+const locationList = document.getElementById('location-list');
+const metrics = document.getElementById('metrics');
+const customerEl = document.getElementById('customer');
+const engineerEl = document.getElementById('engineer');
+const statusEl = document.getElementById('status');
+const addressEl = document.getElementById('address');
+const progressRange = document.getElementById('progress-range');
+const progressBar = document.getElementById('progress-bar');
+const progressText = document.getElementById('progress-text');
+const milestonesEl = document.getElementById('milestones');
+const notesEl = document.getElementById('notes');
+const blockersEl = document.getElementById('blockers');
+const nextStepsEl = document.getElementById('next-steps');
+const troubleshootingNotesEl = document.getElementById('troubleshooting-notes');
+const deploymentExportsEl = document.getElementById('deployment-exports');
+const troubleshootingExportsEl = document.getElementById('troubleshooting-exports');
+const hubNotesEl = document.getElementById('hub-notes');
+const hubExportsEl = document.getElementById('hub-exports');
+const searchEl = document.getElementById('location-search');
+
+titleEl.textContent = data.dashboard_name || 'Deployment Support Dashboard';
+teamEl.textContent = data.customer_group || 'Internal Deployment Team';
+statusEl.innerHTML = statuses.map(s => `<option>${s}</option>`).join('');
+
+function persist() {
+  localStorage.setItem(storageKey, JSON.stringify(data));
+}
+
+function current() {
+  return data.locations[activeIndex];
+}
+
+function exportLabel(path, index) {
+  const fileName = (path || '').split('/').pop().split('\\\\').pop();
+  const baseName = (fileName || '').replace(/\.html?$/i, '');
+  if (baseName) {
+    return baseName.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+  return index === 0 ? 'Deployment Schematic' : `Document ${index + 1}`;
+}
+
+function normalizeDoc(doc) {
+  if (doc && typeof doc === 'object') {
+    const path = String(doc.path || '').trim();
+    const label = String(doc.label || exportLabel(path, 0)).trim();
+    return { label: label || 'Document', path };
+  }
+  const path = String(doc || '').trim();
+  return { label: exportLabel(path, 0), path };
+}
+
+function locationDeploymentDocs(loc) {
+  const docs = Array.isArray(loc.deployment_docs) ? loc.deployment_docs : [];
+  if (docs.length) return docs.map(normalizeDoc);
+  return Array.isArray(loc.exports) ? loc.exports.map(normalizeDoc) : [];
+}
+
+function locationTroubleshootingDocs(loc) {
+  const docs = Array.isArray(loc.troubleshooting_docs) ? loc.troubleshooting_docs : [];
+  return docs.map(normalizeDoc);
+}
+
+function hubTroubleshootingDocs() {
+  const docs = (((data || {}).troubleshooting_hub || {}).docs || []);
+  return Array.isArray(docs) ? docs.map(normalizeDoc) : [];
+}
+
+function renderMetrics(loc) {
+  const completed = Object.values(loc.milestones || {}).filter(Boolean).length;
+  const openExports = locationDeploymentDocs(loc).length + locationTroubleshootingDocs(loc).length;
+  metrics.innerHTML = `
+    <div class="metric"><div class="metric-label">Status</div><div class="metric-value">${loc.status}</div></div>
+    <div class="metric"><div class="metric-label">Progress</div><div class="metric-value">${loc.progress}%</div></div>
+    <div class="metric"><div class="metric-label">Milestones Done</div><div class="metric-value">${completed} / ${Object.keys(loc.milestones || {}).length}</div></div>
+    <div class="metric"><div class="metric-label">Documents</div><div class="metric-value">${openExports}</div></div>`;
+}
+
+function renderTabs() {
+  const query = (searchEl.value || '').toLowerCase().trim();
+  tabbar.innerHTML = '';
+  locationList.innerHTML = '';
+  data.locations.forEach((loc, i) => {
+    const hay = `${loc.name} ${loc.customer} ${loc.engineer}`.toLowerCase();
+    if (query && !hay.includes(query)) return;
+    const tab = document.createElement('button');
+    tab.className = 'tab' + (i === activeIndex ? ' active' : '');
+    tab.textContent = loc.name;
+    tab.onclick = () => { activeIndex = i; render(); };
+    tabbar.appendChild(tab);
+
+    const item = document.createElement('div');
+    item.className = 'location-item' + (i === activeIndex ? ' active' : '');
+    item.innerHTML = `<div class="location-name">${loc.name}</div><div class="location-meta">${loc.status} • ${loc.progress}% • ${loc.engineer || 'Unassigned'}</div>`;
+    item.onclick = () => { activeIndex = i; render(); };
+    locationList.appendChild(item);
+  });
+}
+
+function renderMilestones(loc) {
+  milestonesEl.innerHTML = '';
+  Object.entries(loc.milestones || {}).forEach(([name, value]) => {
+    const wrap = document.createElement('label');
+    wrap.className = 'check';
+    wrap.innerHTML = `<input type="checkbox" data-name="${name}" ${value ? 'checked' : ''}> ${name}`;
+    milestonesEl.appendChild(wrap);
+  });
+  milestonesEl.querySelectorAll('input').forEach(input => {
+    input.addEventListener('change', () => {
+      current().milestones[input.dataset.name] = input.checked;
+      persist();
+      renderMetrics(current());
+    });
+  });
+}
+
+function renderDocGroup(target, docs, emptyText) {
+  target.innerHTML = '';
+  if (!docs.length) {
+    target.innerHTML = `<div class="note">${emptyText}</div>`;
+    return;
+  }
+  docs.forEach((doc, index) => {
+    const item = normalizeDoc(doc);
+    const path = item.path;
+    const label = item.label || exportLabel(path, index);
+    const isWebPath = !!path && !/^[a-zA-Z]:(?:\\|\/)|^\/|^file:\/\//.test(path);
+    if (isWebPath) {
+      const link = document.createElement('a');
+      link.className = 'export-chip';
+      link.href = encodeURI(path);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = label;
+      link.title = path;
+      target.appendChild(link);
+    } else {
+      const chip = document.createElement('div');
+      chip.className = 'export-chip local';
+      chip.textContent = `${label}${path ? ' (local only)' : ''}`;
+      chip.title = path;
+      target.appendChild(chip);
+    }
+  });
+}
+
+function renderExports(loc) {
+  renderDocGroup(
+    deploymentExportsEl,
+    locationDeploymentDocs(loc),
+    'No deployment HTML documents attached yet.'
+  );
+  renderDocGroup(
+    troubleshootingExportsEl,
+    locationTroubleshootingDocs(loc),
+    'No troubleshooting HTML documents attached yet.'
+  );
+  const hub = data.troubleshooting_hub || {};
+  hubNotesEl.textContent = hub.notes || 'No shared troubleshooting guide notes yet.';
+  renderDocGroup(
+    hubExportsEl,
+    hubTroubleshootingDocs(),
+    'No shared troubleshooting guide documents attached yet.'
+  );
+}
+
+function render() {
+  if (!data.locations.length) return;
+  const loc = current();
+  renderTabs();
+  renderMetrics(loc);
+  customerEl.value = loc.customer || '';
+  engineerEl.value = loc.engineer || '';
+  statusEl.value = loc.status || statuses[0];
+  addressEl.value = loc.address || '';
+  progressRange.value = loc.progress || 0;
+  progressBar.style.width = `${loc.progress || 0}%`;
+  progressText.textContent = `${loc.progress || 0}% complete`;
+  notesEl.value = loc.notes || '';
+  blockersEl.value = loc.blockers || '';
+  nextStepsEl.value = loc.next_steps || '';
+  troubleshootingNotesEl.value = loc.troubleshooting_notes || '';
+  renderMilestones(loc);
+  renderExports(loc);
+}
+
+function bindEditable(el, updater) {
+  el.addEventListener('input', () => { updater(el.value); persist(); renderMetrics(current()); renderTabs(); });
+}
+
+bindEditable(customerEl, v => current().customer = v);
+bindEditable(engineerEl, v => current().engineer = v);
+bindEditable(addressEl, v => current().address = v);
+bindEditable(statusEl, v => current().status = v);
+bindEditable(notesEl, v => current().notes = v);
+bindEditable(blockersEl, v => current().blockers = v);
+bindEditable(nextStepsEl, v => current().next_steps = v);
+bindEditable(troubleshootingNotesEl, v => current().troubleshooting_notes = v);
+progressRange.addEventListener('input', () => { current().progress = Number(progressRange.value || 0); persist(); render(); });
+searchEl.addEventListener('input', renderTabs);
+
+document.getElementById('download-json').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'deployment_dashboard_snapshot.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('download-html').addEventListener('click', () => {
+  persist();
+  const safeJson = JSON.stringify(data).replace(/<\/script>/g, '<\\/script>');
+  const html = document.documentElement.outerHTML.replace(rawString(), safeJson);
+  const blob = new Blob([html], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'deployment_dashboard_edited.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+function rawString() {
+  return document.getElementById('dashboard-data').textContent;
+}
+
+render();
+</script>
+</body>
+</html>

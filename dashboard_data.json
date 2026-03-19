@@ -1,0 +1,81 @@
+{
+  "dashboard_name": "Deployment Support Dashboard",
+  "customer_group": "Internal Deployment Team",
+  "milestone_templates": [
+    "Rack Delivered",
+    "Network Ready",
+    "QuLSR Installed",
+    "White Rabbit Validated",
+    "Carina Configured",
+    "Final Validation"
+  ],
+  "troubleshooting_hub": {
+    "notes": "Use this guide for cross-site recovery steps, known device failure patterns, and links to interactive HTML diagnostics that apply to the broader deployment program.",
+    "docs": [
+      {
+        "label": "Osu Devices Summary",
+        "path": "exports/troubleshooting-guide/OSU_DEVICES_SUMMARY.html"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "d0004c19-9ca0-460d-85c3-d29b93a3d622",
+      "name": "New York POP",
+      "customer": "Acme Telecom",
+      "address": "350 5th Ave, New York, NY",
+      "engineer": "Alex",
+      "status": "In Progress",
+      "progress": 55,
+      "notes": "Waiting on final fiber patch validation.",
+      "blockers": "Customer maintenance window not confirmed.",
+      "next_steps": "Validate White Rabbit timing and close rack checklist.",
+      "milestones": {
+        "Rack Delivered": true,
+        "Network Ready": true,
+        "QuLSR Installed": true,
+        "White Rabbit Validated": false,
+        "Carina Configured": false,
+        "Final Validation": false
+      },
+      "deployment_docs": [
+        {
+          "label": "Osu Devices Summary",
+          "path": "exports/new-york-pop/OSU_DEVICES_SUMMARY.html"
+        }
+      ],
+      "troubleshooting_notes": "Oscillator drift appears after 20 minutes of uptime. Use the linked device guides and recovery flow.",
+      "troubleshooting_docs": [
+        {
+          "label": "Osu Devices Summary",
+          "path": "exports/new-york-pop/OSU_DEVICES_SUMMARY-2.html"
+        }
+      ],
+      "updated_at": "2026-03-19T01:34:26"
+    },
+    {
+      "id": "c77e7e2e-b051-4e8d-bd8c-e6d7dcf8b027",
+      "name": "Chicago Core",
+      "customer": "Acme Telecom",
+      "address": "600 W Chicago Ave, Chicago, IL",
+      "engineer": "Sam",
+      "status": "Blocked",
+      "progress": 35,
+      "notes": "Router management VLAN mismatch discovered during turn-up.",
+      "blockers": "Awaiting corrected switch template from networking.",
+      "next_steps": "Apply updated VLAN template, rerun validation.",
+      "milestones": {
+        "Rack Delivered": false,
+        "Network Ready": false,
+        "QuLSR Installed": false,
+        "White Rabbit Validated": false,
+        "Carina Configured": false,
+        "Final Validation": false
+      },
+      "deployment_docs": [],
+      "troubleshooting_notes": "Validate switch template version and compare port mode against known-good baseline.",
+      "troubleshooting_docs": [],
+      "updated_at": "2026-03-19T01:34:26"
+    }
+  ]
+}
