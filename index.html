@@ -57,7 +57,7 @@ textarea { min-height:120px; resize:vertical; }
 </style>
 </head>
 <body>
-<script id="dashboard-data" type="application/json">{"dashboard_name": "Deployment Support Dashboard", "customer_group": "Internal Deployment Team", "locations": [{"id": "998f66ad-473f-4da4-954c-92136b8b0aa0", "name": "New York POP", "customer": "Acme Telecom", "address": "350 5th Ave, New York, NY", "engineer": "Alex", "status": "In Progress", "progress": 55, "notes": "Waiting on final fiber patch validation.", "blockers": "Customer maintenance window not confirmed.", "next_steps": "Validate White Rabbit timing and close rack checklist.", "milestones": {"Rack Delivered": true, "Network Ready": true, "QuLSR Installed": true, "White Rabbit Validated": false, "Carina Configured": false, "Final Validation": false}, "exports": [], "updated_at": "2026-03-19T00:27:34"}, {"id": "232523cb-e0af-4f03-8875-9160bf963330", "name": "Chicago Core", "customer": "Acme Telecom", "address": "600 W Chicago Ave, Chicago, IL", "engineer": "Sam", "status": "Blocked", "progress": 35, "notes": "Router management VLAN mismatch discovered during turn-up.", "blockers": "Awaiting corrected switch template from networking.", "next_steps": "Apply updated VLAN template, rerun validation.", "milestones": {"Rack Delivered": false, "Network Ready": false, "QuLSR Installed": false, "White Rabbit Validated": false, "Carina Configured": false, "Final Validation": false}, "exports": [], "updated_at": "2026-03-19T00:27:34"}]}</script>
+<script id="dashboard-data" type="application/json">{"dashboard_name": "Deployment Support Dashboard", "customer_group": "Internal Deployment Team", "locations": [{"id": "e6cff2dd-5eb9-4c61-925c-d3aaff5d3a61", "name": "Ohio State University", "customer": "Ron, Wendson", "address": "Columbus, Ohio", "engineer": "", "status": "In Progress", "progress": 80, "notes": "APCs installed", "blockers": "", "next_steps": "", "milestones": {"Rack Delivered": false, "Network Ready": false, "QuLSR Installed": false, "White Rabbit Validated": false, "Carina Configured": false, "Final Validation": false}, "exports": ["exports/ohio-state-university/OSU_DEVICE_INFORMATION.html"], "updated_at": "2026-03-19T00:43:03"}]}</script>
 <div class="header">
   <div>
     <div class="eyebrow">Deployment Ops</div>
@@ -319,6 +319,7 @@ document.getElementById('download-json').addEventListener('click', () => {
 
 document.getElementById('download-html').addEventListener('click', () => {
   persist();
+  const safeJson = JSON.stringify(data).replace(/<\/script>/g, '<\/script>');
   const html = document.documentElement.outerHTML.replace(rawString(), JSON.stringify(data).replace('</script>', '<\/script>'));
   const blob = new Blob([html], {type:'text/html'});
   const a = document.createElement('a');
