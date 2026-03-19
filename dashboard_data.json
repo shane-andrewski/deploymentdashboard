@@ -3,28 +3,28 @@
   "customer_group": "Internal Deployment Team",
   "locations": [
     {
-      "id": "e6cff2dd-5eb9-4c61-925c-d3aaff5d3a61",
-      "name": "Ohio State University",
-      "customer": "Ron, Wendson",
-      "address": "Columbus, Ohio",
+      "id": "20a42259-b8ee-4867-81ce-27c0e3e3bf3b",
+      "name": "OSU",
+      "customer": "Customer",
+      "address": "",
       "engineer": "",
-      "status": "In Progress",
-      "progress": 80,
-      "notes": "APCs installed",
+      "status": "Not Started",
+      "progress": 15,
+      "notes": "",
       "blockers": "",
       "next_steps": "",
       "milestones": {
-        "Rack Delivered": false,
-        "Network Ready": false,
-        "QuLSR Installed": false,
-        "White Rabbit Validated": false,
-        "Carina Configured": false,
+        "Rack Delivered": true,
+        "Network Ready": true,
+        "QuLSR Installed": true,
+        "White Rabbit Validated": true,
+        "Carina Configured": true,
         "Final Validation": false
       },
       "exports": [
-        "exports/ohio-state-university/OSU_DEVICE_INFORMATION.html"
+        "exports/osu/OSU_DEVICE_INFORMATION.html"
       ],
-      "updated_at": "2026-03-19T00:43:03"
+      "updated_at": "2026-03-19T00:51:31"
     }
   ]
 }
