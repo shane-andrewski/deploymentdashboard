@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting Guide</title>
+<style>
+:root {
+  --bg:#0A0A0F; --panel:#11111A; --card:#14192A; --alt:#0E1220; --text:#E8ECF3; --muted:#94A0B8;
+  --accent:#EB4BC6; --outline:#262C3D; --warn:#F59E0B;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; background:var(--bg); color:var(--text); font-family:Inter,Segoe UI,Arial,sans-serif; }
+body { padding:20px; }
+.shell { max-width:1400px; margin:0 auto; }
+.header { display:grid; grid-template-columns:1.5fr auto; gap:16px; background:linear-gradient(180deg,#151725,#0e1018); border:1px solid var(--outline); border-radius:24px; padding:22px; margin-bottom:18px; }
+.eyebrow { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.title { font-size:34px; font-weight:800; margin:8px 0 6px; }
+.sub { color:var(--muted); line-height:1.5; }
+.actions { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; justify-content:flex-end; }
+.button { border:1px solid var(--outline); background:#181C2B; color:var(--text); border-radius:12px; padding:10px 14px; text-decoration:none; }
+.button:hover { background:#20263A; }
+.layout { display:grid; grid-template-columns:320px 1fr 420px; gap:16px; }
+.panel { background:var(--panel); border:1px solid var(--outline); border-radius:20px; padding:16px; }
+.input { width:100%; background:var(--alt); color:var(--text); border:1px solid var(--outline); border-radius:12px; padding:10px 12px; }
+.device-list { display:flex; flex-direction:column; gap:10px; margin-top:12px; max-height:68vh; overflow:auto; }
+.device-item { padding:14px; border:1px solid var(--outline); border-radius:16px; background:#0f1320; cursor:pointer; }
+.device-item.active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+.device-name { font-weight:700; margin-bottom:4px; }
+.device-meta { color:var(--muted); font-size:13px; }
+.card { background:var(--card); border:1px solid var(--outline); border-radius:18px; padding:16px; }
+.stack { display:flex; flex-direction:column; gap:16px; }
+.issue-list { display:flex; flex-direction:column; gap:10px; }
+.issue-item { border:1px solid var(--outline); border-radius:16px; background:#0f1320; padding:14px; }
+.issue-title { font-weight:700; margin-bottom:6px; }
+.issue-notes { color:var(--muted); font-size:14px; line-height:1.5; white-space:pre-wrap; }
+.issue-actions { margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; }
+.issue-link { border:1px solid var(--outline); background:#181C2B; color:var(--text); border-radius:999px; padding:9px 14px; text-decoration:none; }
+.issue-link:hover { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+.issue-link.disabled, .issue-link.disabled:hover { color:var(--muted); cursor:default; border-color:var(--outline); box-shadow:none; }
+.note { color:var(--muted); line-height:1.55; }
+.empty { color:var(--muted); border:1px dashed var(--outline); border-radius:16px; padding:16px; background:#0f1320; }
+.warning { color:#ffd28e; background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.3); border-radius:14px; padding:12px 14px; }
+.docs { display:flex; flex-wrap:wrap; gap:10px; }
+.doc-chip { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--outline); border-radius:999px; padding:9px 14px; background:#0f1320; font-size:13px; color:var(--text); text-decoration:none; }
+.doc-chip:hover { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+@media (max-width:1200px) { .layout{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<script id="guide-data" type="application/json">{"dashboard_name": "Deployment Support Dashboard", "customer_group": "Internal Deployment Team", "milestone_templates": ["Rack Delivered", "Network Ready", "QuLSR Installed", "White Rabbit Validated", "Carina Configured", "Final Validation"], "troubleshooting_hub": {"notes": "Use this guide for cross-site recovery steps, known device failure patterns, and links to interactive HTML diagnostics that apply to the broader deployment program.", "docs": [], "devices": [{"id": "8deea375-80e4-4698-b66f-4106b5441398", "name": "QuLSR", "summary": "", "issues": []}, {"id": "1e7c4571-1563-4236-ae40-8cd95209d496", "name": "QuSRC", "summary": "", "issues": []}, {"id": "fa0fc966-0765-49be-8ea4-ffe913cb7a5b", "name": "QuAPC", "summary": "", "issues": []}, {"id": "e04e729b-013a-49dc-8606-122f37ec6ff4", "name": "QuVAL", "summary": "", "issues": []}]}, "locations": [{"id": "8f518d03-08f8-48b0-a00a-2c9d07058bbf", "name": "mock", "customer": "customer", "address": "", "engineer": "person", "status": "In Progress", "progress": 48, "notes": "", "blockers": "", "next_steps": "", "milestones": {"Rack Delivered": true, "Network Ready": true, "QuLSR Installed": true, "White Rabbit Validated": true, "Carina Configured": false, "Final Validation": false}, "deployment_docs": [{"label": "Osu Devices Summary", "path": "exports/mock/OSU_DEVICES_SUMMARY.html"}], "troubleshooting_notes": "", "troubleshooting_docs": [], "updated_at": "2026-03-19T01:50:42"}]}</script>
+<div class="shell">
+  <div class="header">
+    <div>
+      <div class="eyebrow">Troubleshooting Guide</div>
+      <div class="title" id="guide-title">Device Troubleshooting</div>
+      <div class="sub" id="guide-notes"></div>
+    </div>
+    <div class="actions">
+      <a class="button" href="index.html">Back To Dashboard</a>
+    </div>
+  </div>
+  <div class="layout">
+    <aside class="panel">
+      <div style="font-weight:700">Devices</div>
+      <input class="input" id="device-search" placeholder="Search devices">
+      <div class="device-list" id="device-list"></div>
+    </aside>
+    <main class="stack">
+      <section class="card">
+        <div class="eyebrow">Selected Device</div>
+        <div class="title" style="font-size:28px; margin-top:6px" id="device-title"></div>
+        <div class="sub" id="device-summary"></div>
+      </section>
+      <section class="card">
+        <div style="font-weight:700; margin-bottom:12px">Common Issues</div>
+        <div class="issue-list" id="issue-list"></div>
+      </section>
+    </main>
+    <aside class="stack">
+      <section class="card">
+        <div style="font-weight:700; margin-bottom:10px">How This Works</div>
+        <div class="note">Pick a device, then pick an issue. If the issue has an attached interactive HTML file, the solution button opens it in a new tab. If not, the guide shows <strong>No Solution</strong> and does nothing else.</div>
+      </section>
+      <section class="card">
+        <div style="font-weight:700; margin-bottom:10px">Shared Guide Documents</div>
+        <div class="docs" id="shared-docs"></div>
+      </section>
+      <section class="card">
+        <div style="font-weight:700; margin-bottom:10px">Selection Status</div>
+        <div id="selection-status" class="warning">Select a device to begin.</div>
+      </section>
+    </aside>
+  </div>
+</div>
+<script>
+const data = JSON.parse(document.getElementById('guide-data').textContent);
+const guide = data.troubleshooting_hub || {};
+const rawDevices = Array.isArray(guide.devices) ? guide.devices : [];
+const sharedDocs = Array.isArray(guide.docs) ? guide.docs : [];
+let activeDeviceIndex = rawDevices.length ? 0 : -1;
+
+const guideNotesEl = document.getElementById('guide-notes');
+const searchEl = document.getElementById('device-search');
+const deviceListEl = document.getElementById('device-list');
+const deviceTitleEl = document.getElementById('device-title');
+const deviceSummaryEl = document.getElementById('device-summary');
+const issueListEl = document.getElementById('issue-list');
+const sharedDocsEl = document.getElementById('shared-docs');
+const selectionStatusEl = document.getElementById('selection-status');
+
+guideNotesEl.textContent = guide.notes || 'Browse device-specific issues and attach interactive troubleshooting exports from the builder.';
+
+function normalizeDoc(doc) {
+  if (doc && typeof doc === 'object') {
+    return {
+      label: String(doc.label || 'Document').trim() || 'Document',
+      path: String(doc.path || '').trim(),
+    };
+  }
+  return { label: 'Document', path: String(doc || '').trim() };
+}
+
+function normalizeIssue(issue) {
+  return {
+    title: String((issue || {}).title || 'New Issue').trim() || 'New Issue',
+    notes: String((issue || {}).notes || '').trim(),
+    solution_doc: normalizeDoc((issue || {}).solution_doc || {}),
+  };
+}
+
+function normalizeDevice(device) {
+  return {
+    id: String((device || {}).id || ''),
+    name: String((device || {}).name || 'New Device').trim() || 'New Device',
+    summary: String((device || {}).summary || '').trim(),
+    issues: Array.isArray((device || {}).issues) ? device.issues.map(normalizeIssue) : [],
+  };
+}
+
+const devices = rawDevices.map(normalizeDevice);
+
+function filteredDevices() {
+  const query = (searchEl.value || '').toLowerCase().trim();
+  if (!query) return devices.map((device, index) => ({ device, index }));
+  return devices
+    .map((device, index) => ({ device, index }))
+    .filter(item => `${item.device.name} ${item.device.summary}`.toLowerCase().includes(query));
+}
+
+function renderSharedDocs() {
+  sharedDocsEl.innerHTML = '';
+  if (!sharedDocs.length) {
+    sharedDocsEl.innerHTML = '<div class="empty">No shared guide documents attached yet.</div>';
+    return;
+  }
+  sharedDocs.forEach(doc => {
+    const item = normalizeDoc(doc);
+    if (!item.path) return;
+    const link = document.createElement('a');
+    link.className = 'doc-chip';
+    link.href = encodeURI(item.path);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = item.label;
+    sharedDocsEl.appendChild(link);
+  });
+  if (!sharedDocsEl.childElementCount) {
+    sharedDocsEl.innerHTML = '<div class="empty">No shared guide documents attached yet.</div>';
+  }
+}
+
+function renderDeviceList() {
+  const visible = filteredDevices();
+  deviceListEl.innerHTML = '';
+  if (!visible.length) {
+    deviceListEl.innerHTML = '<div class="empty">No matching devices found.</div>';
+    if (activeDeviceIndex >= devices.length) activeDeviceIndex = devices.length ? 0 : -1;
+    renderDeviceDetails();
+    return;
+  }
+  if (!visible.some(item => item.index === activeDeviceIndex)) {
+    activeDeviceIndex = visible[0].index;
+  }
+  visible.forEach(item => {
+    const device = item.device;
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'device-item' + (item.index === activeDeviceIndex ? ' active' : '');
+    const count = device.issues.length;
+    const suffix = count === 1 ? 'issue' : 'issues';
+    card.innerHTML = `<div class="device-name">${device.name}</div><div class="device-meta">${count} ${suffix}</div>`;
+    card.onclick = () => {
+      activeDeviceIndex = item.index;
+      render();
+    };
+    deviceListEl.appendChild(card);
+  });
+}
+
+function renderIssue(issue) {
+  const card = document.createElement('article');
+  card.className = 'issue-item';
+  const hasSolution = !!issue.solution_doc.path;
+  const notes = issue.notes || 'No issue notes yet.';
+  card.innerHTML = `
+    <div class="issue-title">${issue.title}</div>
+    <div class="issue-notes">${notes}</div>
+    <div class="issue-actions"></div>
+  `;
+  const actions = card.querySelector('.issue-actions');
+  if (hasSolution) {
+    const link = document.createElement('a');
+    link.className = 'issue-link';
+    link.href = encodeURI(issue.solution_doc.path);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = issue.solution_doc.label || 'Open Solution';
+    link.onclick = () => {
+      selectionStatusEl.textContent = `Opening solution for "${issue.title}"...`;
+    };
+    actions.appendChild(link);
+  } else {
+    const disabled = document.createElement('a');
+    disabled.className = 'issue-link disabled';
+    disabled.href = '#';
+    disabled.textContent = 'No Solution';
+    disabled.onclick = event => {
+      event.preventDefault();
+      selectionStatusEl.textContent = `No Solution is attached for "${issue.title}".`;
+    };
+    actions.appendChild(disabled);
+  }
+  return card;
+}
+
+function renderDeviceDetails() {
+  const device = devices[activeDeviceIndex];
+  if (!device) {
+    deviceTitleEl.textContent = 'No Device Selected';
+    deviceSummaryEl.textContent = 'Add devices from the builder to populate this guide.';
+    issueListEl.innerHTML = '<div class="empty">No devices are available yet.</div>';
+    selectionStatusEl.textContent = 'Select a device to begin.';
+    return;
+  }
+  deviceTitleEl.textContent = device.name;
+  deviceSummaryEl.textContent = device.summary || 'No device summary yet.';
+  issueListEl.innerHTML = '';
+  if (!device.issues.length) {
+    issueListEl.innerHTML = '<div class="empty">No common issues are configured for this device yet.</div>';
+    selectionStatusEl.textContent = `Viewing ${device.name}. No common issues are configured yet.`;
+    return;
+  }
+  device.issues.forEach(issue => issueListEl.appendChild(renderIssue(issue)));
+  selectionStatusEl.textContent = `Viewing ${device.name}. Click an issue solution to open its interactive HTML.`;
+}
+
+function render() {
+  renderDeviceList();
+  renderDeviceDetails();
+  renderSharedDocs();
+}
+
+searchEl.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

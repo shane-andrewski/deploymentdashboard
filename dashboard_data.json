@@ -1,0 +1,73 @@
+{
+  "dashboard_name": "Deployment Support Dashboard",
+  "customer_group": "Internal Deployment Team",
+  "milestone_templates": [
+    "Rack Delivered",
+    "Network Ready",
+    "QuLSR Installed",
+    "White Rabbit Validated",
+    "Carina Configured",
+    "Final Validation"
+  ],
+  "troubleshooting_hub": {
+    "notes": "Use this guide for cross-site recovery steps, known device failure patterns, and links to interactive HTML diagnostics that apply to the broader deployment program.",
+    "docs": [],
+    "devices": [
+      {
+        "id": "8deea375-80e4-4698-b66f-4106b5441398",
+        "name": "QuLSR",
+        "summary": "",
+        "issues": []
+      },
+      {
+        "id": "1e7c4571-1563-4236-ae40-8cd95209d496",
+        "name": "QuSRC",
+        "summary": "",
+        "issues": []
+      },
+      {
+        "id": "fa0fc966-0765-49be-8ea4-ffe913cb7a5b",
+        "name": "QuAPC",
+        "summary": "",
+        "issues": []
+      },
+      {
+        "id": "e04e729b-013a-49dc-8606-122f37ec6ff4",
+        "name": "QuVAL",
+        "summary": "",
+        "issues": []
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "8f518d03-08f8-48b0-a00a-2c9d07058bbf",
+      "name": "mock",
+      "customer": "customer",
+      "address": "",
+      "engineer": "person",
+      "status": "In Progress",
+      "progress": 48,
+      "notes": "",
+      "blockers": "",
+      "next_steps": "",
+      "milestones": {
+        "Rack Delivered": true,
+        "Network Ready": true,
+        "QuLSR Installed": true,
+        "White Rabbit Validated": true,
+        "Carina Configured": false,
+        "Final Validation": false
+      },
+      "deployment_docs": [
+        {
+          "label": "Osu Devices Summary",
+          "path": "exports/mock/OSU_DEVICES_SUMMARY.html"
+        }
+      ],
+      "troubleshooting_notes": "",
+      "troubleshooting_docs": [],
+      "updated_at": "2026-03-19T01:50:42"
+    }
+  ]
+}
